@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+
+    <PackageId>Dbarone.Net.Extensions.Object</PackageId>
+    <Version>1.0.0</Version>
+    <Authors>David Barone</Authors>
+    <Company>Dbarone.com</Company>
+    <Description>A library of .NET object extension methods.</Description>
+    <RepositoryUrl>https://github.com/davidbarone/Dbarone.Net.Extensions.Object</RepositoryUrl>
+    <PackageProjectUrl>https://github.com/davidbarone/Dbarone.Net.Extensions.Object</PackageProjectUrl>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Include="..\README.md" Pack="true" PackagePath="\"/>
+  </ItemGroup>
+</Project>
