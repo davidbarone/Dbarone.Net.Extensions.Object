@@ -1,5 +1,4 @@
 ﻿namespace Dbarone.Net.Extensions.Object;
-using System.Reflection;
 
 public static class ObjectExtensions
 {
@@ -51,7 +50,7 @@ public static class ObjectExtensions
     /// <param name="keyMapper">Optional Func to map key names.</param>
     /// <param name="valueMapper">Optional Fun to map values. The Func parameters are key (string) and object (value).</param>
     /// <returns>A new dictionary object.</returns>
-    public static IDictionary<string, object?>? ToDictionary(this object obj, Func<string, string>? keyMapper = null, Func<string, object?, object?>? valueMapper = null)
+    public static IDictionary<string, object?>? ToDictionary(this object? obj, Func<string, string>? keyMapper = null, Func<string, object?, object?>? valueMapper = null)
     {
         if (obj == null)
             return null;
