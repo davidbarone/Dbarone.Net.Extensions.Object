@@ -5,6 +5,9 @@ using System.Text;
 using System;
 using System.Collections;
 
+/// <summary>
+/// A collection of object extension methods.
+/// </summary>
 public static class ObjectExtensions
 {
     /// <summary>
@@ -92,8 +95,8 @@ public static class ObjectExtensions
     /// <summary>
     /// Compares the current object to another object.
     /// </summary>
-    /// <param name="obj"></param>
-    /// <param name="value"></param>
+    /// <param name="obj1">The first object.</param>
+    /// <param name="obj2">The second object to compare.</param>
     /// <returns>Returns -1 if obj1 is less than obj2, zero if the objects are equal, and +1 if obj1 is greater than obj2.</returns>
     public static int CompareTo(this object obj1, object obj2)
     {
