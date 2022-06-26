@@ -1,4 +1,9 @@
 ﻿namespace Dbarone.Net.Extensions.Object;
+using System.Runtime.Serialization;
+using System.Runtime.Serialization.Formatters.Binary;
+using System.Text;
+using System;
+using System.Collections;
 
 public static class ObjectExtensions
 {
@@ -100,5 +105,76 @@ public static class ObjectExtensions
 
         var result = objAsComparable.CompareTo(valueAsComparable);
         return result;
+    }
+
+    /// <summary>
+    /// Compares 2 objects and returns true if they are equivalent in value. Reference types are compared property by property, and collections are compared by element.
+    /// </summary>
+    /// <param name="obj1">First object to compare.</param>
+    /// <param name="obj2">Second object to compare.</param>
+    /// <returns></returns>
+    public static bool Equivalent(this object? obj1, object? obj2)
+    {
+        if (object.ReferenceEquals(obj1, obj2))
+        {
+            // optimise for both objects being same instance, or both null.
+            return true;
+        }
+        else if (obj1 == null || obj2 == null)
+        {
+            // either object null - return false
+            return false;
+        }
+
+        var obj1Type = obj1.GetType();
+        var obj2Type = obj2.GetType();
+
+        if (obj1Type != obj2Type)
+        {
+            // different types - not equal
+            return false;
+        }
+        else if (obj1Type.IsValueType)
+        {
+            // for struct types, just call Equals()
+            return obj1.Equals(obj2);
+        }
+        else if (typeof(IEnumerable).IsAssignableFrom(obj1Type))
+        {
+            // IEnumerable - check every item in obj1 exists in obj2
+            // this is NOT performant yet.
+            var list1 = new List<object>();
+            var list2 = new List<object>();
+            foreach (var item in ((IEnumerable)obj1))
+            {
+                list1.Add(item);
+            }
+            foreach (var item in ((IEnumerable)obj2))
+            {
+                list2.Add(item);
+            }
+
+            if (list1.Count() != list2.Count())
+            {
+                return false;
+            }
+            else
+            {
+                return !list1.Any(l1 => !list2.Any(l2 => l2.Equivalent(l1)));
+            }
+        }
+        else
+        {
+            // compare properties recursively
+            var properties = obj1.GetType().GetProperties();
+            foreach (var property in properties)
+            {
+                if (!property.GetValue(obj1).Equivalent(property.GetValue(obj2)))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
     }
 }
