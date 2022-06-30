@@ -37,13 +37,13 @@ public class UnitTest1
     [InlineData(1, 1, true)]
     [InlineData("foobar", "foobar", true)]
     [InlineData("foobar1", "foobar2", false)]
-    public void Equivalent(object obj1, object obj2, bool expected)
+    public void ValueEquals(object obj1, object obj2, bool expected)
     {
         Assert.Equal(expected, obj1.ValueEquals(obj2));
     }
 
     [Fact]
-    public void Equivalent_Class()
+    public void ValueEquals_Class()
     {
         var dog1 = new Animal("dog");
         var dog2 = new Animal("dog");
@@ -55,7 +55,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public void Equivalent_Struct()
+    public void ValueEquals_Struct()
     {
         var v1 = new Vector(1, 1);
         var v2 = new Vector(1, 1);
@@ -67,7 +67,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public void Equivalent_IEnumerable()
+    public void ValueEquals_IEnumerable()
     {
         var arr1 = new int[] { 1, 2, 3, 4, 5 };
         var arr2 = new int[] { 1, 2, 3, 4, 5 };
@@ -83,7 +83,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public void Equivalent_IEnumerable_Class()
+    public void ValueEquals_IEnumerable_Class()
     {
         var dog1 = new Animal("dog");
         var dog2 = new Animal("dog");
@@ -103,7 +103,7 @@ public class UnitTest1
     }
 
     [Fact]
-    public void Equivalent_Dictionary(){
+    public void ValueEquals_Dictionary(){
         var d1 = new Dictionary<string, int>(){
             {"foo", 1},
             {"bar", 2}
