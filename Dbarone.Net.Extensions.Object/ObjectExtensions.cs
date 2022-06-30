@@ -190,6 +190,15 @@ public static class ObjectExtensions
                     return false;
                 }
             }
+            // compare fields recursively
+            var fields = obj1.GetType().GetFields();
+            foreach (var field in fields)
+            {
+                if (!field.GetValue(obj1).ValueEquals(field.GetValue(obj2)))
+                {
+                    return false;
+                }
+            }
             return true;
         }
     }

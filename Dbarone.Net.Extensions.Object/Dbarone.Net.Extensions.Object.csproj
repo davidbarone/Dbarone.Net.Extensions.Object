@@ -7,7 +7,7 @@
     <Nullable>enable</Nullable>
 
     <PackageId>Dbarone.Net.Extensions.Object</PackageId>
-    <Version>1.0.4</Version>
+    <Version>1.0.5</Version>
     <Authors>David Barone</Authors>
     <Company>Dbarone.com</Company>
     <Description>A library of .NET object extension methods.</Description>
