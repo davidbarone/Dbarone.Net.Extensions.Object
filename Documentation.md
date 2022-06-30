@@ -1,4 +1,11 @@
 # Dbarone.Net.Extensions.Object
+
+
+>## T:Dbarone.Net.Extensions.Object.ObjectExtensions
+
+ A collection of object extension methods. 
+
+---
 ### M:Dbarone.Net.Extensions.Object.ObjectExtensions.Extend(System.Object,System.Object[])
  Merges properties from multiple objects. 
 |Name | Description |
@@ -20,12 +27,12 @@
  Compares the current object to another object. 
 |Name | Description |
 |-----|------|
-|obj: ||
-|value: ||
+|obj1: |The first object.|
+|obj2: |The second object to compare.|
 
 ---
-### M:Dbarone.Net.Extensions.Object.ObjectExtensions.Equivalent(System.Object,System.Object)
- Compares 2 objects and returns true if they are equivalent in value. Reference types are compared property by property, and collections are compared by element. 
+### M:Dbarone.Net.Extensions.Object.ObjectExtensions.ValueEquals(System.Object,System.Object)
+ Compares 2 objects and returns true if they are equivalent in value. Reference types are compared by doing a ValueEquals on all public properties and fields recursively, and collections are compared by element. For collections, order is important. 
 |Name | Description |
 |-----|------|
 |obj1: |First object to compare.|
