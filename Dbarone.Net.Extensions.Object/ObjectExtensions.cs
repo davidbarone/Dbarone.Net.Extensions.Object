@@ -4,6 +4,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System;
 using System.Collections;
+using System.Linq;
 
 /// <summary>
 /// A collection of object extension methods.
@@ -111,12 +112,12 @@ public static class ObjectExtensions
     }
 
     /// <summary>
-    /// Compares 2 objects and returns true if they are equivalent in value. Reference types are compared property by property, and collections are compared by element.
+    /// Compares 2 objects and returns true if they are equivalent in value. Reference types are compared by doing a ValueEquals on all public properties and fields recursively, and collections are compared by element. For collections, order is important.
     /// </summary>
     /// <param name="obj1">First object to compare.</param>
     /// <param name="obj2">Second object to compare.</param>
     /// <returns></returns>
-    public static bool Equivalent(this object? obj1, object? obj2)
+    public static bool ValueEquals(this object? obj1, object? obj2)
     {
         if (object.ReferenceEquals(obj1, obj2))
         {
@@ -144,27 +145,39 @@ public static class ObjectExtensions
         }
         else if (typeof(IEnumerable).IsAssignableFrom(obj1Type))
         {
-            // IEnumerable - check every item in obj1 exists in obj2
-            // this is NOT performant yet.
-            var list1 = new List<object>();
-            var list2 = new List<object>();
-            foreach (var item in ((IEnumerable)obj1))
+            var result = true;
+
+            var collection1 = (obj1 as IEnumerable)!;
+            var collection2 = (obj2 as IEnumerable)!;
+
+            var enumerator1 = collection1.GetEnumerator();
+            var enumerator2 = collection2.GetEnumerator();
+
+            var hasItem1 = enumerator1.MoveNext();
+            var hasItem2 = enumerator2.MoveNext();
+
+            while (hasItem1 && hasItem2)
             {
-                list1.Add(item);
+                var value1 = enumerator1.Current;
+                var value2 = enumerator2.Current;
+                if (!value1.ValueEquals(value2))
+                {
+                    result = false;
+                    break;
+                }
+                hasItem1 = enumerator1.MoveNext();
+                hasItem2 = enumerator2.MoveNext();
             }
-            foreach (var item in ((IEnumerable)obj2))
+            if (hasItem1 || hasItem2)
             {
-                list2.Add(item);
+                result = false;
             }
 
-            if (list1.Count() != list2.Count())
-            {
-                return false;
-            }
-            else
-            {
-                return !list1.Any(l1 => !list2.Any(l2 => l2.Equivalent(l1)));
-            }
+            // IEnumerator does not have a Dispose method, but IEnumerator<T> has.
+            if (obj1 is IDisposable) { ((IDisposable)obj1).Dispose(); }
+            if (obj2 is IDisposable) { ((IDisposable)obj2).Dispose(); }
+
+            return result;
         }
         else
         {
@@ -172,7 +185,7 @@ public static class ObjectExtensions
             var properties = obj1.GetType().GetProperties();
             foreach (var property in properties)
             {
-                if (!property.GetValue(obj1).Equivalent(property.GetValue(obj2)))
+                if (!property.GetValue(obj1).ValueEquals(property.GetValue(obj2)))
                 {
                     return false;
                 }
