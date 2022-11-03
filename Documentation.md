@@ -14,6 +14,13 @@
 |obj2: |A variable number of objects to merge into the current object.|
 
 ---
+### M:Dbarone.Net.Extensions.Object.ObjectExtensions.ToObject``1(System.Collections.Generic.IDictionary{System.String,System.Object})
+ Converts a dictionary to a POCO object. 
+|Name | Description |
+|-----|------|
+|dict: |The dictionary containing the source values.|
+
+---
 ### M:Dbarone.Net.Extensions.Object.ObjectExtensions.ToDictionary(System.Object,System.Func{System.String,System.String},System.Func{System.String,System.Object,System.Object})
  Converts an object to a dictionary. 
 |Name | Description |

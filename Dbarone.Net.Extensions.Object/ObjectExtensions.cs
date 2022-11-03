@@ -53,6 +53,32 @@ public static class ObjectExtensions
     }
 
     /// <summary>
+    /// Converts a dictionary to a POCO object.
+    /// </summary>
+    /// <typeparam name="T">The object type to convert the dictionary to.</typeparam>
+    /// <param name="dict">The dictionary containing the source values.</param>
+    /// <returns>A POCO object or null.</returns>
+    public static T? ToObject<T>(this IDictionary<string, object?>? dict) where T : class
+    {
+        if (dict == null)
+            return (T?)null;
+
+        T obj = Activator.CreateInstance<T>();
+        var t = obj.GetType();
+
+        foreach (var pi in t.GetProperties())
+        {
+            var k = pi.Name;
+            if (dict.ContainsKey(k))
+            {
+                var v = dict[k];
+                pi.SetValue(obj, v);
+            }
+        }
+        return (T?)obj;
+    }
+
+    /// <summary>
     /// Converts an object to a dictionary.
     /// </summary>
     /// <param name="obj">The object to convert to a dictionary.</param>

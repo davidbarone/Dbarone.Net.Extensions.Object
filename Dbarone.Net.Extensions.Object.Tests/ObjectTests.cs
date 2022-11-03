@@ -13,6 +13,12 @@ public struct Vector
     }
 }
 
+public class FooBarBaz {
+    public int Foo { get; set; }
+    public string Bar { get; set; } = default!;
+    public bool Baz { get; set; }
+}
+
 public class Animal
 {
     public string Name { get; set; } = default!;
@@ -119,5 +125,24 @@ public class UnitTest1
         Assert.True(d1.ValueEquals(d1));
         Assert.False(d1.ValueEquals(d2));   // different order
         Assert.False(d1.ValueEquals(d3));
+    }
+
+    [Fact]
+    public void Test_ToObject() {
+
+        // Arrange
+        IDictionary<string, object?>? dict = new Dictionary<string, object?>();
+        dict["Foo"] = 12345;
+        dict["Bar"] = "Lorem ipsum dolor";
+        dict["Baz"] = true;
+
+        // Act
+        var obj = dict.ToObject<FooBarBaz>();
+
+        // Assert
+        Assert.NotNull(obj);
+        Assert.Equal(12345, obj!.Foo);
+        Assert.Equal("Lorem ipsum dolor", obj.Bar);
+        Assert.True(obj.Baz);
     }
 }
